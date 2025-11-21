@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Subha M - Profile Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card-bg: #ffffff;
+      --accent: #2563eb;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border-soft: #e5e7eb;
+      --pill-bg: #eef2ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .app {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+
+    .header-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px 20px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      border: 1px solid var(--border-soft);
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .header-main {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .name {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .title {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: #f3f4f6;
+      border-radius: 999px;
+    }
+
+    .meta strong {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--pill-bg);
+      color: #3730a3;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr);
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .summary-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .chip-row {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      white-space: nowrap;
+    }
+
+    .section {
+      margin-bottom: 12px;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-title-inline {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 4px;
+    }
+
+    .section-body {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    .experience-item {
+      border-left: 2px solid #e5e7eb;
+      padding-left: 10px;
+      margin-bottom: 12px;
+    }
+
+    .experience-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .exp-role {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .exp-company {
+      font-size: 13px;
+      color: #4b5563;
+      margin-bottom: 2px;
+    }
+
+    .exp-meta {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    .exp-points {
+      list-style: disc;
+      padding-left: 18px;
+      margin: 0;
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .exp-points li {
+      margin-bottom: 4px;
+    }
+
+    .exp-points li:last-child {
+      margin-bottom: 0;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .skill-category-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 4px;
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      font-size: 12px;
+      color: #111827;
+    }
+
+    .skill-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      white-space: nowrap;
+    }
+
+    .edu-item {
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .edu-degree {
+      font-weight: 600;
+    }
+
+    .edu-school {
+      color: #4b5563;
+    }
+
+    .edu-meta {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <div class="header-card">
+      <div class="avatar">SM</div>
+      <div class="header-main">
+        <div class="name">Subha M</div>
+        <div class="title">AWS DevOps / Cloud Engineer</div>
+        <div class="meta">
+          <span><strong>Location:</strong> Dallas, TX, USA</span>
+          <span><strong>Phone:</strong> +1 (940) 999-7889</span>
+          <span><strong>Email:</strong> <a href="mailto:subhasrimaddela1@gmail.com">subhasrimaddela1@gmail.com</a></span>
+          <span><strong>Experience:</strong> 3+ years</span>
+        </div>
+      </div>
+      <div>
+        <div class="pill">DevOps • Cloud • Kubernetes</div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <!-- Left Column: Summary & Skills -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Professional Summary</div>
+          </div>
+        </div>
+        <div class="summary-text">
+          DevOps and Cloud Engineer with 3+ years of experience designing and automating infrastructure across AWS, Azure, and GCP. Strong focus on CI/CD, Infrastructure as Code, and container orchestration using Kubernetes, Docker, and Helm. Experienced in building resilient, monitored platforms with Terraform, Ansible, Prometheus, Grafana, ELK, and Dynatrace.
+        </div>
+        <div class="chip-row">
+          <div class="chip">AWS</div>
+          <div class="chip">Azure</div>
+          <div class="chip">GCP</div>
+          <div class="chip">Kubernetes</div>
+          <div class="chip">Terraform</div>
+          <div class="chip">Jenkins / GitLab CI</div>
+          <div class="chip">Helm</div>
+          <div class="chip">Prometheus / Grafana</div>
+        </div>
+
+        <hr style="margin: 14px 0; border: none; border-top: 1px dashed #e5e7eb;" />
+
+        <div class="section">
+          <div class="section-title-inline">Key Highlights</div>
+          <div class="section-body">
+            • Automated multi-cloud infrastructure and CI/CD pipelines, cutting deployment times by ~50%.<br />
+            • Managed Kubernetes multi-cluster environments with autoscaling, service mesh, and DR strategies.<br />
+            • Implemented monitoring and logging solutions to enable proactive alerting and performance tuning.
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Experience -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Experience</div>
+            <div class="card-subtitle">Recent roles & impact</div>
+          </div>
+        </div>
+
+        <div class="experience-item">
+          <div class="exp-role">AWS DevOps / Cloud Engineer</div>
+          <div class="exp-company">Trimble — Dallas, TX, USA</div>
+          <div class="exp-meta">May 2024 – Present</div>
+          <ul class="exp-points">
+            <li>Manage AWS, Azure, and on-prem infrastructure using Terraform, Ansible, Puppet, and Chef for consistent, scalable deployments.</li>
+            <li>Automate CI/CD pipelines with Jenkins, GitLab CI/CD, and Azure DevOps, reducing deployment times by ~50% using Python and Bash.</li>
+            <li>Orchestrate containerized microservices with Kubernetes, Docker, and Helm across EKS, AKS, and GKE, enabling high availability and scalability.</li>
+            <li>Implement DR strategies with Velero, cross-region failover, automated backups, and runbooks for critical workloads.</li>
+            <li>Monitor health and performance using Prometheus, Grafana, ELK, and Dynatrace while enforcing IAM, RBAC, VPN, and firewall security controls.</li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="exp-role">AWS / Cloud Engineer</div>
+          <div class="exp-company">Wells Fargo — India</div>
+          <div class="exp-meta">June 2022 – July 2023</div>
+          <ul class="exp-points">
+            <li>Automated infrastructure deployment on AWS and Azure using Terraform and Ansible integrated with Python scripting.</li>
+            <li>Deployed and maintained containerized applications with Kubernetes, Docker, Helm, and OpenShift / AKS clusters.</li>
+            <li>Integrated GitLab CI/CD and CircleCI for streamlined build, test, and release workflows with Git / Bitbucket.</li>
+            <li>Designed IaC templates and backup / DR strategies to support scalable, secure, and highly available environments.</li>
+          </ul>
+        </div>
+
+        <div class="experience-item">
+          <div class="exp-role">DevOps Engineer</div>
+          <div class="exp-company">AT&amp;T — India</div>
+          <div class="exp-meta">May 2021 – May 2022</div>
+          <ul class="exp-points">
+            <li>Supported CI/CD pipelines with Jenkins and Azure DevOps using Python and Bash automation in Unix environments.</li>
+            <li>Performed system backups and recovery and managed databases (PostgreSQL, MongoDB, MySQL, Oracle, Snowflake).</li>
+            <li>Improved container security with Kubernetes and Docker by applying image scanning, RBAC, and network policies.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row: Skills and Education -->
+    <div class="layout" style="margin-top: 18px;">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Skills</div>
+            <div class="card-subtitle">Cloud, DevOps, and tooling</div>
+          </div>
+        </div>
+
+        <div class="skills-grid">
+          <div>
+            <div class="skill-category-title">Cloud Platforms</div>
+            <div class="skill-list">
+              <span class="skill-pill">AWS</span>
+              <span class="skill-pill">Microsoft Azure</span>
+              <span class="skill-pill">Google Cloud Platform (GCP)</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="skill-category-title">CI/CD &amp; IaC</div>
+            <div class="skill-list">
+              <span class="skill-pill">Jenkins</span>
+              <span class="skill-pill">GitLab CI/CD</span>
+              <span class="skill-pill">CircleCI</span>
+              <span class="skill-pill">Azure DevOps</span>
+              <span class="skill-pill">Terraform</span>
+              <span class="skill-pill">Ansible</span>
+              <span class="skill-pill">Puppet</span>
+              <span class="skill-pill">Chef</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="skill-category-title">Containerization &amp; Orchestration</div>
+            <div class="skill-list">
+              <span class="skill-pill">Kubernetes</span>
+              <span class="skill-pill">Docker</span>
+              <span class="skill-pill">Helm</span>
+              <span class="skill-pill">OpenShift</span>
+              <span class="skill-pill">AKS</span>
+              <span class="skill-pill">GKE</span>
+              <span class="skill-pill">Docker Swarm</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="skill-category-title">Programming &amp; Scripting</div>
+            <div class="skill-list">
+              <span class="skill-pill">Python (Flask, NumPy, scikit-learn)</span>
+              <span class="skill-pill">SQL</span>
+              <span class="skill-pill">Bash</span>
+              <span class="skill-pill">PowerShell</span>
+              <span class="skill-pill">Go</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="skill-category-title">Monitoring &amp; Logging</div>
+            <div class="skill-list">
+              <span class="skill-pill">Prometheus</span>
+              <span class="skill-pill">Grafana</span>
+              <span class="skill-pill">ELK Stack</span>
+              <span class="skill-pill">Splunk</span>
+              <span class="skill-pill">Dynatrace</span>
+              <span class="skill-pill">Nagios</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="skill-category-title">Other</div>
+            <div class="skill-list">
+              <span class="skill-pill">IAM / RBAC / VPN</span>
+              <span class="skill-pill">Firewall Management</span>
+              <span class="skill-pill">Agile (Scrum / Kanban)</span>
+              <span class="skill-pill">Streamlit</span>
+              <span class="skill-pill">Tableau</span>
+              <span class="skill-pill">Power BI</span>
+              <span class="skill-pill">JIRA</span>
+              <span class="skill-pill">Confluence</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Education</div>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">Master’s in Information Technology and Management</div>
+          <div class="edu-school">University of Texas at Dallas</div>
+          <div class="edu-meta">Graduation: May 2025</div>
+        </div>
+
+        <hr style="margin: 12px 0; border: none; border-top: 1px dashed #e5e7eb;" />
+
+        <div class="section">
+          <div class="section-title-inline">Profile Usage Tips</div>
+          <div class="section-body">
+            • Host this file as your portfolio landing page (GitHub Pages, Netlify, etc.).<br />
+            • Link it from your resume or LinkedIn as a “Live Profile View”.<br />
+            • You can edit any text directly in this HTML file to keep it up to date.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
